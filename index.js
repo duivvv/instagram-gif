@@ -88,12 +88,12 @@ function _handle_results(params, results, cb){
 					}
 				}).bind(this);
 
-				img.onerror = (function(){
-					console.log("error");
+				img.onerror = (function(error){
+					return cb({msg: error});
 				}).bind(this);
 
 				img.src = new Buffer(body, 'binary');
-				
+
 			}).bind(this));
 
 	}
