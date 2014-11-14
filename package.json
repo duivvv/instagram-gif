@@ -1,0 +1,29 @@
+{
+  "name": "instagram-gif",
+  "version": "0.1.1",
+  "description": "convert instagram results into an animated GIF file",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/duivvv/instagram-gif"
+  },
+  "keywords": [
+    "instagram",
+    "gif",
+    "convertor"
+  ],
+  "author": "Geoffrey Dhuyvetters",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/duivvv/instagram-gif/issues"
+  },
+  "homepage": "https://github.com/duivvv/instagram-gif",
+  "dependencies": {
+    "canvas": "^1.1.6",
+    "gifencoder": "^1.0.5",
+    "imagemin": "^3.0.0",
+    "instagram-node": "^0.5.1",
+    "lodash": "^2.4.1",
+    "request": "^2.48.0"
+  }
+}
