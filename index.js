@@ -4,7 +4,6 @@ var Canvas = require('canvas');
 var Image = Canvas.Image;
 var _ = require('lodash');
 var GIFEncoder = require('gifencoder');
-var Imagemin = require('imagemin');
 
 var fs = require('fs');
 
@@ -62,6 +61,10 @@ function _handle_results(params, results, cb){
 		});
 	}
 
+	if(results.length === 0){
+		return cb({msg: "no images found"});
+	}
+
 	for(var i = 0;i < results.length;i++){
 
 			var url = results[i].images.standard_resolution.url;
@@ -76,15 +79,7 @@ function _handle_results(params, results, cb){
 					this.encoder.addFrame(this.ctx);
 					if(results.length === this.converted){
 						this.encoder.finish();
-						var imagemin = new Imagemin().use(Imagemin.gifsicle());
-						imagemin.src(params.path);
-						imagemin.dest(".");
-						imagemin.run(function(err, files){
-					    if(err) {
-					      throw err;
-					    }
-							return cb(null, {path: params.path});
-						})
+						return cb(null, {path: params.path});
 					}
 				}).bind(this);
 
@@ -126,6 +121,8 @@ InstagramGIF.prototype.create = function(params, cb){
 
 			if(results && results.length > 0){
 				_handle_results.call(this, params, results, cb);
+			}else{
+				return cb({msg: "no images found"});
 			}
 
 		}).bind(this));
@@ -146,6 +143,8 @@ InstagramGIF.prototype.create = function(params, cb){
 
 				if(results && results.length > 0){
 					_handle_results.call(this, params, results, cb);
+				}else{
+					return cb({msg: "no images found"});
 				}
 
 			}).bind(this));
