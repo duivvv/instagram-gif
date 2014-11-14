@@ -16,7 +16,7 @@ npm install --save instagram-gif
 
 ```javascript
 
-var InstagramGIF = require("../index.js");
+var InstagramGIF = require("instagram-gif");
 
 var instagram_gif = new InstagramGIF({
 	access_token: <access_token>,
