@@ -61,8 +61,11 @@ function _handle_results(params, results, cb){
 		});
 	}
 
+	var message;
+
 	if(results.length === 0){
-		return cb({msg: "no images found"});
+		message = "no images found";
+		return cb(new Error(message));
 	}
 
 	for(var i = 0;i < results.length;i++){
@@ -84,7 +87,7 @@ function _handle_results(params, results, cb){
 				}).bind(this);
 
 				img.onerror = (function(error){
-					return cb({msg: error});
+					return cb(error);
 				}).bind(this);
 
 				img.src = new Buffer(body, 'binary');
@@ -115,14 +118,16 @@ InstagramGIF.prototype.create = function(params, cb){
 
 		api.tag_media_recent(params.tag, {count: params.count}, (function(err, results, pagination, remaining, limit) {
 
+			var message;
+
 			if(err){
-				return cb({msg: err});
+				return cb(err);
 			}
 
 			if(results && results.length > 0){
 				_handle_results.call(this, params, results, cb);
 			}else{
-				return cb({msg: "no images found"});
+				return cb(new Error("no images found"));
 			}
 
 		}).bind(this));
