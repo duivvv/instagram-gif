@@ -46,141 +46,63 @@ function handler(err, result){
 
 path where GIF file should be saved
 
+    Type: `String`
 
-```javascript
 
-// ...
+### size [optional]
 
-instagram_gif.create({
-	path: "./duivvv.gif",
-	username: "duivvv"
-}, handler);
-
-```
+size of the file
 
     Type: `String`
+    options: `small|thumb|full`
+    default: `full`
 
 ### username [optional]
 
 which username to return media, filter on
 
-```javascript
-
-// ...
-
-instagram_gif.create({
-	path: "./duivvv.gif",
-	username: "duivvv"
-}, handler);
-
-```
-
     Type: `String`
+
 
 ### tag [optional]
 
 search media for a tag,
-
-```javascript
-
-// ...
-
-instagram_gif.create({
-	path: "./summer.gif",
-	tag: "summer"
-}, handler);
-
-```
-
 add username for extra filter on tag
 
-```javascript
+    Type: `String`
 
-// ...
-
-instagram_gif.create({
-	path: "./summer.gif",
-	tag: "summer",
-	username: "duivvv"
-}, handler);
-
-```
 
 ### count [optional]
 
-amount of pictures to load (can return less if filtering is applied)
-
-```javascript
-
-// ...
-
-instagram_gif.create({
-	path: "./duivvv.gif",
-	username: "duivvv",
-	count: 10
-}, handler);
-
-```
+amount of pictures to load
 
     Type: `Number`
     default: 300
+
 
 ### repeat [optional]
 
 frame to start repeat after end
 
-```javascript
-
-// ...
-
-instagram_gif.create({
-	path: "./duivvv.gif",
-	username: "duivvv",
-	repeat: 2
-}, handler);
-
-```
-
     Type: `Number`
     default: 0
+
 
 ### delay [optional]
 
 delay between each frame
 
-```javascript
-
-// ...
-
-instagram_gif.create({
-	path: "./duivvv.gif",
-	username: "duivvv",
-	delay: 100
-}, handler);
-
-```
-
     Type: `Number`
     default: 300
+
 
 ### quality [optional]
 
 frame quality
 
-```javascript
-
-// ...
-
-instagram_gif.create({
-	path: "./duivvv.gif",
-	username: "duivvv",
-	quality: 3
-}, handler);
-
-```
-
     Type: `Number`
     default: 10
+
 
 ## License
 

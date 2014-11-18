@@ -1,30 +1,14 @@
 var request = require('request');
-var api = require('instagram-node').instagram();
 var Canvas = require('canvas');
 var Image = Canvas.Image;
 var _ = require('lodash');
 var GIFEncoder = require('gifencoder');
 
+var APIHelper = require('./modules/APIHelper.js');
+
 var fs = require('fs');
 
-function InstagramGIF(config){
-	if(!config.access_token){
-		throw new Error("please provide an access_token");
-	}
-	if(!config.client_id){
-		throw new Error("please provide a client_id");
-	}
-	if(!config.client_secret){
-		throw new Error("please provide a client_secret");
-	}
-	api.use({
-		access_token: config.access_token
-	});
-	api.use({
-		client_id: config.client_id,
-		client_secret: config.client_secret
-	});
-}
+var images = [];
 
 function _init_encoder(params, width, height){
 
@@ -47,30 +31,19 @@ function _init_canvas(width, height){
 
 function _handle_results(params, results, cb){
 
-	this.width = results[0].images.standard_resolution.width;
-	this.height = results[0].images.standard_resolution.height;
+	images = [];
+
+	this.width = results[0].images[params.size].width;
+	this.height = results[0].images[params.size].height;
 
 	this.converted = 0;
 
 	this.encoder = _init_encoder(params, this.width, this.height);
 	this.ctx =  _init_canvas(this.width, this.height);
 
-	if(params.tag && params.username){
-		results = _.filter(results, function(result){
-			return result.user.username === params.username;
-		});
-	}
-
-	var message;
-
-	if(results.length === 0){
-		message = "no images found";
-		return cb(new Error(message));
-	}
-
 	for(var i = 0;i < results.length;i++){
 
-			var url = results[i].images.standard_resolution.url;
+			var url = results[i].images[params.size].url;
 
 			request({url: url, encoding: null}, (function (error, response, body) {
 
@@ -98,7 +71,7 @@ function _handle_results(params, results, cb){
 
 }
 
-InstagramGIF.prototype.create = function(params, cb){
+function _init_params(params){
 
 	params = params || {};
 	params.path = params.path || false;
@@ -114,48 +87,86 @@ InstagramGIF.prototype.create = function(params, cb){
 	params.tag = params.tag || false;
 	params.quality = parseInt(params.quality) || 10;
 
+	switch(params.size){
+		case "thumb":
+			params.size = "thumbnail";
+		break;
+		case "small":
+			params.size = "low_resolution";
+		break;
+		case "full":
+		default:
+			params.size = "standard_resolution";
+		break;
+	}
+
+	return params;
+
+}
+
+function InstagramGIF(config){
+
+	if(!config.access_token){
+		throw new Error("please provide an access_token");
+	}
+	if(!config.client_id){
+		throw new Error("please provide a client_id");
+	}
+	if(!config.client_secret){
+		throw new Error("please provide a client_secret");
+	}
+
+	this.api = new APIHelper({
+		access_token: config.access_token,
+		client_id: config.client_id,
+		client_secret: config.client_secret
+	});
+
+}
+
+InstagramGIF.prototype.create = function(params, cb){
+
+	params = _init_params(params);
+
 	if(params.tag){
 
-		api.tag_media_recent(params.tag, {count: params.count}, (function(err, results, pagination, remaining, limit) {
+		this.api.search_by_tag(params, (function(error, params, results){
 
-			var message;
-
-			if(err){
-				return cb(err);
+			if(error){
+				return cb(error);
 			}
 
-			if(results && results.length > 0){
-				_handle_results.call(this, params, results, cb);
-			}else{
-				return cb(new Error("no images found"));
+			if(results){
+
+				if(results.length === 0){
+					return cb(new Error("no images found"));
+				}
+
+				_handle_results(params, results, cb);
+
 			}
 
 		}).bind(this));
 
 	}else if(params.username){
 
-		api.user_search(params.username, function(err, users, remaining, limit){
+		this.api.search_by_user(params, (function(error, params, results){
 
-			if(err){
-				return cb({msg: err});
+			if(error){
+				return cb(error);
 			}
 
-			api.user_media_recent(users[0].id, {count: params.count}, (function(err, results, pagination, remaining, limit) {
+			if(results){
 
-				if(err){
-					return cb({msg: err});
+				if(results.length === 0){
+					return cb(new Error("no images found"));
 				}
 
-				if(results && results.length > 0){
-					_handle_results.call(this, params, results, cb);
-				}else{
-					return cb({msg: "no images found"});
-				}
+				_handle_results(params, results, cb);
 
-			}).bind(this));
+			}
 
-		});
-
+		}).bind(this));
 
 
 	}
