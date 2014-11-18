@@ -87,6 +87,10 @@ function _init_params(params){
 	params.tag = params.tag || false;
 	params.quality = parseInt(params.quality) || 10;
 
+	if(!params.username && !params.tag){
+		throw new Error("please provide a search tag and/or a username");
+	}
+
 	switch(params.size){
 		case "thumb":
 			params.size = "thumbnail";
