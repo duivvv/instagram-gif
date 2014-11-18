@@ -46,22 +46,22 @@ function handler(err, result){
 
 path where GIF file should be saved
 
-    Type: `String`
+    Type: 'String'
 
 
 ### size [optional]
 
 size of the file
 
-    Type: `String`
-    options: `small|thumb|full`
-    default: `full`
+    Type: 'String'
+    options: 'small|thumb|full'
+    default: 'full'
 
 ### username [optional]
 
 which username to return media, filter on
 
-    Type: `String`
+    Type: 'String'
 
 
 ### tag [optional]
@@ -69,14 +69,14 @@ which username to return media, filter on
 search media for a tag,
 add username for extra filter on tag
 
-    Type: `String`
+    Type: 'String'
 
 
 ### count [optional]
 
 amount of pictures to load
 
-    Type: `Number`
+    Type: 'Number'
     default: 300
 
 
@@ -84,7 +84,7 @@ amount of pictures to load
 
 frame to start repeat after end
 
-    Type: `Number`
+    Type: 'Number'
     default: 0
 
 
@@ -92,7 +92,7 @@ frame to start repeat after end
 
 delay between each frame
 
-    Type: `Number`
+    Type: 'Number'
     default: 300
 
 
@@ -100,7 +100,7 @@ delay between each frame
 
 frame quality
 
-    Type: `Number`
+    Type: 'Number'
     default: 10
 
 
