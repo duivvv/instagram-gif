@@ -23,6 +23,6 @@
     "gifencoder": "^1.0.5",
     "instagram-node": "^0.5.1",
     "lodash": "^2.4.1",
-    "request": "^2.48.0"
+    "request": "^2.77.0"
   }
 }
